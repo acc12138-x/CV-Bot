@@ -100,29 +100,29 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-    Root[/" / "]:::page
-    Resume[/" /resume "]:::page
-    Admin[/" /admin "]:::page
-    
-    Root --> H[Hero 页]:::block
-    Root --> P1[项目 1]:::block
-    Root --> P2[项目 2]:::block
-    Root --> P3[项目 3]:::block
-    Root --> E[我的经历]:::block
-    Root -.->|聊天按钮| C[💬 聊天面板<br/>水波纹展开]:::chat
+    Root["/"]:::page
+    Resume["/resume"]:::page
+    Admin["/admin"]:::page
 
-    Admin --> T1[首页 Hero]:::tab
-    Admin --> T2[项目页面]:::tab
-    Admin --> T3[我的经历]:::tab
-    Admin --> T4[在线简历]:::tab
-    Admin --> T5[个人信息]:::tab
-    Admin --> T6[技术栈]:::tab
-    Admin --> T7[简历文件]:::tab
-    Admin --> T8[页脚 / 备案]:::tab
-    Admin --> T9[飞书设置]:::tab
-    Admin --> T10[事实库]:::tab
-    Admin --> T11[会话记录]:::tab
-    Admin --> T12[安全设置]:::tab
+    Root --> H["Hero 页"]:::block
+    Root --> P1["项目 1"]:::block
+    Root --> P2["项目 2"]:::block
+    Root --> P3["项目 3"]:::block
+    Root --> E["我的经历"]:::block
+    Root -.->|聊天按钮| C["💬 聊天面板<br/>水波纹展开"]:::chat
+
+    Admin --> T1["首页 Hero"]:::tab
+    Admin --> T2["项目页面"]:::tab
+    Admin --> T3["我的经历"]:::tab
+    Admin --> T4["在线简历"]:::tab
+    Admin --> T5["个人信息"]:::tab
+    Admin --> T6["技术栈"]:::tab
+    Admin --> T7["简历文件"]:::tab
+    Admin --> T8["页脚 / 备案"]:::tab
+    Admin --> T9["飞书设置"]:::tab
+    Admin --> T10["事实库"]:::tab
+    Admin --> T11["会话记录"]:::tab
+    Admin --> T12["安全设置"]:::tab
 
     classDef page fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
     classDef block fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155
