@@ -53,3 +53,5 @@ frontend/_diag.js
 # ==================== 本地启动脚本 ====================
 启动.bat
 启动.sh
+# TypeScript 构建缓存
+*.tsbuildinfo
