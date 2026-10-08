@@ -1,0 +1,50 @@
+# ==================== Python ====================
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ==================== 环境变量（绝不提交） ====================
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ==================== 数据（本地数据库 + 简历 + 媒体） ====================
+backend/data/
+backend/static/
+
+# ==================== 前端 ====================
+node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/public/
+
+# ==================== 系统 ====================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ==================== 日志 ====================
+*.log
+logs/
+
+# ==================== 临时脚本 ====================
+backend/_*.py
+frontend/_*.js
+frontend/_diag.js
+
+# ==================== 本地启动脚本 ====================
+启动.bat
+启动.sh
+
+# ==================== Docker 数据卷（如有） ====================
+postgres_data/
+redis_data/

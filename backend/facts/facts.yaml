@@ -1,0 +1,77 @@
+# CV_Bot 事实库
+# 规则：
+#   - id 稳定不变，格式 F-001 ~ F-999
+#   - public: true  = 可以对外回答
+#   - public: false = 不对外，仅「请求联系方式」按钮触发转人工
+
+- id: F-001
+  topic: basic
+  key: name
+  value: "你的名字"
+  public: true
+
+- id: F-002
+  topic: basic
+  key: title
+  value: "后端 / AI 应用开发"
+  public: true
+
+- id: F-003
+  topic: basic
+  key: github
+  value: "https://github.com/你的用户名"
+  public: true
+
+- id: F-010
+  topic: skill
+  key: backend
+  value: "Python / FastAPI / SQLite / Docker"
+  public: true
+
+- id: F-011
+  topic: skill
+  key: frontend
+  value: "React / TypeScript / Vite"
+  public: true
+
+- id: F-012
+  topic: skill
+  key: ai
+  value: "LLM 应用、SSE 流式、事实库约束、防幻觉验证"
+  public: true
+
+- id: F-020
+  topic: project
+  key: cv-bot
+  value: "CV_Bot：FastAPI + React + DeepSeek，不做 RAG，全量注入事实库，配确定性验证器"
+  public: true
+
+- id: F-021
+  topic: project
+  key: easkb
+  value: "企业售后知识库 Agent 平台：FastAPI + React，RAG + 权限点 + 飞书通知"
+  public: true
+
+- id: F-022
+  topic: project
+  key: tsx
+  value: "点餐系统：React + 后端服务，Docker 部署"
+  public: true
+
+- id: F-090
+  topic: contact
+  key: phone
+  value: "13xxxxxxxxx"
+  public: false
+
+- id: F-091
+  topic: contact
+  key: email
+  value: "you@example.com"
+  public: false
+
+- id: F-092
+  topic: contact
+  key: wechat
+  value: "你的微信号"
+  public: false
