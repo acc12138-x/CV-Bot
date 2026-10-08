@@ -1,13 +1,13 @@
 # CV_Bot 事实库模板
 # 使用方式：
-#   1. 复制此文件为 facts.yaml:  Copy-Item facts.yaml.example facts.yaml
-#   2. 把下面的示例内容改成你自己的真实信息
+#   1. 复制此文件为 facts.yaml:  cp facts.yaml.example facts.yaml
+#   2. 改成你的真实信息
 #   3. 保存后重启后端
 #
 # 规则：
 #   - id 稳定不变，格式 F-001 ~ F-999
 #   - public: true  = 可以对外回答
-#   - public: false = 不对外，仅用于内部
+#   - public: false = 不对外
 
 - id: F-001
   topic: basic
@@ -50,8 +50,6 @@
   key: cv-bot
   value: "CV_Bot：FastAPI + React + DeepSeek，不做 RAG，全量注入事实库，配确定性验证器"
   public: true
-
-# ... 继续添加更多事实
 
 - id: F-090
   topic: contact

@@ -15,16 +15,19 @@ venv/
 !.env.example
 
 # ==================== 你的实际内容（不上传） ====================
-# 数据库（含你的配置、会话记录、管理员密码）
-backend/data/
+# 数据库、简历（保留目录 + .gitkeep）
+backend/data/*
 !backend/data/.gitkeep
-# 上传的视频/图片素材
-backend/static/
+# 上传的媒体素材（保留目录 + .gitkeep）
+backend/static/*
 !backend/static/.gitkeep
-# 你的真实简历事实库（提供 facts.yaml.example 模板即可）
+# 真实事实库（提供 .example 模板）
 backend/facts/facts.yaml
 # 前端 public 里的媒体
 frontend/public/
+
+# ==================== 根目录冗余 static ====================
+/static/
 
 # ==================== 前端依赖/构建 ====================
 node_modules/
