@@ -4909,3 +4909,71 @@ button { font-family: inherit; }
   .icp-footer, .page-dots, .chat-overlay, .chat-panel { display: none !important; }
   .resume-content { max-width: 100%; padding: 0; }
 }
+
+
+/* ============================================================
+   v38：左右布局平衡调整
+   ============================================================ */
+
+/* ---------- Hero 页：左侧留出更多边距，不再贴死 ---------- */
+.hero-page .hero-content {
+  max-width: 55% !important;
+  width: 55% !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  padding-left: 8vw !important;      /* 从 48px 提到 8vw（约 150px） */
+  padding-right: 32px !important;
+}
+
+.hero-page .top-nav {
+  padding-left: 8vw !important;
+  padding-right: 6vw !important;
+}
+
+/* ---------- 项目页：同样左侧留白 ---------- */
+.project-page {
+  padding-left: 8vw !important;
+  padding-right: 8vw !important;
+}
+
+.project-page .project-content {
+  max-width: 55% !important;
+  width: 55% !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* ---------- 经历页：往左收，别太贴右 ---------- */
+.experience-page .experience-grid {
+  padding-left: 32% !important;      /* 从 45% 降到 32%，整块左移 */
+  padding-right: 4vw !important;
+  margin-right: auto !important;
+}
+
+/* ---------- 移动端：全部恢复正常 ---------- */
+@media (max-width: 900px) {
+  .hero-page .hero-content,
+  .project-page .project-content,
+  .experience-page .experience-grid {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    margin-right: 0 !important;
+  }
+  .hero-page .top-nav {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .project-page {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+/* ---------- 大屏（>1400px）再收一点 ---------- */
+@media (min-width: 1400px) {
+  .hero-page .hero-content { padding-left: 6vw !important; }
+  .project-page { padding-left: 6vw !important; padding-right: 6vw !important; }
+  .experience-page .experience-grid { padding-left: 28% !important; }
+}

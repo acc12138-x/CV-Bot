@@ -24,14 +24,11 @@ backend/static/*
 # 真实事实库（提供 .example 模板）
 backend/facts/facts.yaml
 # 前端 public 里的媒体
-frontend/public/
-
 # ==================== 根目录冗余 static ====================
 /static/
 
 # ==================== 前端依赖/构建 ====================
 node_modules/
-frontend/dist/
 frontend/.vite/
 
 # ==================== 系统 ====================

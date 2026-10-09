@@ -219,16 +219,17 @@ export function useChat() {
                 break;
               case "intent" as any:
                 // 后端识别到"看简历/下载简历"意图，自动打开链接
-                if (ev.action === "download") {
+                  const intentEv = ev as any;
+		  if (intentEv.action === "download") {
                   const a = document.createElement("a");
-                  a.href = ev.url;
+                  a.href = intentEv.url;
                   a.download = "";
                   a.style.display = "none";
                   document.body.appendChild(a);
                   a.click();
                   document.body.removeChild(a);
-                } else if (ev.action === "view") {
-                  window.open(ev.url, "_blank", "noopener,noreferrer");
+                }  else if (intentEv.action === "view") {
+                  window.open(intentEv.url, "_blank", "noopener,noreferrer");
                 }
                 break;
               case "transfer" as any:
