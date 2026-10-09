@@ -701,7 +701,7 @@ function ResumeEditor({ value, onSave, onReset }: { value: any; onSave: (v: any)
         </div>
       </div>
 
-      <p className="admin-hint">这是 <code>/resume</code> 页显示的内容。支持 HTML。「下载 PDF」调浏览器打印。</p>
+      <p className="admin-hint">这是 <code>/resume</code> 页面显示的内容。支持 HTML。访客可点右上角下载按钮获取你在「简历文件」里上传的 PDF。</p>
 
       <div className="field-row">
         <Field label="页面标题" value={v.pageTitle ?? ""} onChange={(x) => set("pageTitle", x)} />

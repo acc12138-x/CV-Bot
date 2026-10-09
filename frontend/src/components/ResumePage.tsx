@@ -5,6 +5,7 @@ export function ResumePage() {
   const [resume, setResume] = useState<SiteResume | null>(null);
   const [footer, setFooter] = useState<SiteFooter | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [hasFile, setHasFile] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -17,6 +18,12 @@ export function ResumePage() {
       })
       .catch(() => { if (alive) setResume(null); })
       .finally(() => { if (alive) setLoaded(true); });
+
+    // 检查后端是否上传了原文件
+    fetch("/api/site/resume", { method: "HEAD" })
+      .then((r) => { if (alive) setHasFile(r.ok); })
+      .catch(() => { if (alive) setHasFile(false); });
+
     return () => { alive = false; };
   }, []);
 
@@ -37,12 +44,11 @@ export function ResumePage() {
       <header className="resume-nav">
         <a href="/" className="resume-back">← 返回首页</a>
         <div className="resume-actions">
-          <a href="/api/site/resume" className="resume-btn-ghost" download>
-            下载原文件
-          </a>
-          <button className="resume-btn-primary" onClick={() => window.print()}>
-            {resume.downloadLabel || "下载 PDF"}
-          </button>
+          {hasFile && (
+            <a href="/api/site/resume" className="resume-btn-primary" download>
+              {resume.downloadLabel || "下载简历"}
+            </a>
+          )}
         </div>
       </header>
 

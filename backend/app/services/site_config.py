@@ -124,7 +124,7 @@ DEFAULT_SKILLS = [
 
 DEFAULT_RESUME = {
     "pageTitle": "在线简历",
-    "downloadLabel": "下载 PDF",
+    "downloadLabel": "下载简历",
     "htmlContent": """<h1>你的名字</h1>
 <p class="resume-subtitle">后端 / AI 应用开发 · 你的邮箱 · 你的电话</p>
 

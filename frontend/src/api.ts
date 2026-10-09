@@ -12,7 +12,8 @@ export type SSEEvent =
   | { type: "replace"; content: string }
   | { type: "cancelled" }
   | { type: "transfer" }
-  | { type: "done"; usage?: Record<string, number>; retried?: boolean; transfer?: boolean }
+  | { type: "intent"; action: "view" | "download"; url: string }
+  | { type: "done"; usage?: Record<string, number>; retried?: boolean; transfer?: boolean; intent?: string }
   | { type: "error"; content: string };
 
 export type SiteProfile = {
@@ -336,7 +337,7 @@ export const admin = {
     fd.append("file", file);
     const r = await fetch("/api/admin/resume", {
       method: "POST",
-      headers: { "X-Admin-Token": getAdminToken() },
+      headers: { Authorization: `Bearer ${getAdminToken()}` },
       body: fd,
     });
     if (r.status === 401) throw new Error("UNAUTHORIZED");

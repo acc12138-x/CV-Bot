@@ -20,6 +20,16 @@ function isPlayableUrl(url: string): boolean {
   );
 }
 
+function getTheme(accent: string): "theme-light" | "theme-dark" {
+  const c = (accent || "#4f46e5").replace("#", "");
+  if (c.length !== 6) return "theme-dark";
+  const r = parseInt(c.slice(0, 2), 16);
+  const g = parseInt(c.slice(2, 4), 16);
+  const b = parseInt(c.slice(4, 6), 16);
+  const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+  return lum < 140 ? "theme-light" : "theme-dark";
+}
+
 export function ProjectPage({
   project,
   index,
@@ -40,6 +50,7 @@ export function ProjectPage({
   const cls = isActive ? "is-active" : "";
   const num = String(index + 1).padStart(2, "0");
   const totalStr = String(total).padStart(2, "0");
+  const theme = getTheme(project.accent);
 
   const rawMedia = (project.mediaUrl || "").trim();
   const kind = detectKind(rawMedia);
@@ -47,14 +58,11 @@ export function ProjectPage({
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [mediaError, setMediaError] = useState(false);
-  const [mediaReady, setMediaReady] = useState(false);
 
   useEffect(() => {
     setMediaError(false);
-    setMediaReady(false);
   }, [rawMedia]);
 
-  // 视频跟随 isActive：在本页播，离开暂停回到起点
   useEffect(() => {
     if (kind !== "video") return;
     const v = videoRef.current;
@@ -66,7 +74,7 @@ export function ProjectPage({
     } else {
       try { v.pause(); v.currentTime = 0; } catch {}
     }
-  }, [isActive, kind, mediaReady]);
+  }, [isActive, kind]);
 
   const handleChatClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -81,19 +89,17 @@ export function ProjectPage({
 
   return (
     <div
-      className={`project-page ${cls} ${showMedia ? "has-media" : ""}`}
+      className={`project-page ${cls} ${showMedia ? "has-media" : ""} ${theme}`}
       style={{ ["--accent" as any]: project.accent || "#4f46e5" }}
     >
-      {/* 背景：媒体 or 渐变 */}
       {showMedia && kind === "video" && (
-        <div className={`project-bg project-bg-video ${mediaReady ? "ready" : ""}`}>
+        <div className="project-bg project-bg-video">
           <video
             ref={videoRef}
             muted
             loop={false}
             playsInline
             preload="auto"
-            onCanPlay={() => setMediaReady(true)}
             onError={() => setMediaError(true)}
           >
             <source src={rawMedia} />
@@ -101,17 +107,11 @@ export function ProjectPage({
         </div>
       )}
       {showMedia && kind === "image" && (
-        <div className={`project-bg project-bg-image ${mediaReady ? "ready" : ""}`}>
-          <img
-            src={rawMedia}
-            alt=""
-            onLoad={() => setMediaReady(true)}
-            onError={() => setMediaError(true)}
-          />
+        <div className="project-bg project-bg-image">
+          <img src={rawMedia} alt="" onError={() => setMediaError(true)} />
         </div>
       )}
 
-      {/* 渐变发光（无媒体时才明显）*/}
       <div className="project-glow" />
 
       <div className="project-content">

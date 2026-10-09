@@ -217,6 +217,20 @@ export function useChat() {
               case "warn":
                 setError(ev.content);
                 break;
+              case "intent" as any:
+                // 后端识别到"看简历/下载简历"意图，自动打开链接
+                if (ev.action === "download") {
+                  const a = document.createElement("a");
+                  a.href = ev.url;
+                  a.download = "";
+                  a.style.display = "none";
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                } else if (ev.action === "view") {
+                  window.open(ev.url, "_blank", "noopener,noreferrer");
+                }
+                break;
               case "transfer" as any:
                 // AI 识别到转人工意图，已通知本人（但管理员还没真正接管）
                 setPendingTransfer(true);
