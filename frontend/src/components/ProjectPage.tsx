@@ -100,6 +100,8 @@ export function ProjectPage({
             loop={false}
             playsInline
             preload="auto"
+	    disablePictureInPicture
+  	    controlsList="nodownload nofullscreen noremoteplayback"
             onError={() => setMediaError(true)}
           >
             <source src={rawMedia} />

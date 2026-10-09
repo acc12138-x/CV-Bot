@@ -95,6 +95,8 @@ export function HeroPage({
             playsInline
             preload="auto"
             poster={hero.posterUrl || undefined}
+	    disablePictureInPicture
+   	    controlsList="nodownload nofullscreen noremoteplayback"
             onCanPlay={() => setVideoReady(true)}
             onError={() => setVideoError(true)}
           >
