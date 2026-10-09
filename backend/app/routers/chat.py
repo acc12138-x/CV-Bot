@@ -155,7 +155,18 @@ async def chat(req: Request):
         try:
             async with _sem:
                 history = await get_history(session_id)
-                msgs = [{"role": h["role"], "content": h["content"]} for h in history][-12:]
+                msgs = []
+                for h in history:
+                    role = h.get("role", "")
+                    # 人工回复（human）对 LLM 来说就是 assistant
+                    if role == "human":
+                        role = "assistant"
+                    # 只保留 LLM 认识的 role
+                    if role not in ("user", "assistant", "system", "tool"):
+                        continue
+                    msgs.append({"role": role, "content": h.get("content", "")})
+                msgs = msgs[-12:]
+
                 async for delta, u in stream_chat(msgs, cancel_event=cancel_evt):
                     full += delta
                     usage = u or usage
