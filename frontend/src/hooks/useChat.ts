@@ -87,11 +87,18 @@ export function useChat() {
         const ev = JSON.parse(e.data);
         switch (ev.type) {
           case "human_message":
-            // 人工消息：追加到对话，role = human
             setMessages((prev) => {
-              const last = prev[prev.length - 1];
-              if (last && last.role === "human" && last.content === ev.content) return prev;
-              return [...prev, { role: "human", content: ev.content }];
+              // 先清掉末尾空的 AI 占位，再追加人工消息
+              const next = [...prev];
+              const last = next[next.length - 1];
+              if (last && last.role === "assistant" && last.content.trim() === "") {
+                next.pop();
+              }
+              const lastNow = next[next.length - 1];
+              if (lastNow && lastNow.role === "human" && lastNow.content === ev.content) {
+                return next;
+              }
+              return [...next, { role: "human", content: ev.content }];
             });
             setHumanMode(true);
             break;
@@ -99,14 +106,17 @@ export function useChat() {
             setHumanMode(true);
             setPendingTransfer(false);
             setMessages((prev) => {
-              const last = prev[prev.length - 1];
-              if (last && last.role === "assistant" && last.content.includes("已转由本人")) {
-                return prev;
+              const next = [...prev];
+              const last = next[next.length - 1];
+              if (last && last.role === "assistant" && last.content.trim() === "") {
+                next.pop();
               }
-              return [
-                ...prev,
-                { role: "assistant", content: "📩 已通知本人，稍后由本人亲自回复。" },
-              ];
+              const tip = "📩 已通知本人，稍后由本人亲自回复。";
+              const lastNow = next[next.length - 1];
+              if (lastNow && lastNow.role === "assistant" && lastNow.content.includes("已通知本人")) {
+                return next;
+              }
+              return [...next, { role: "assistant", content: tip }];
             });
             break;
           case "human_release":
@@ -129,7 +139,6 @@ export function useChat() {
     };
 
     es.onerror = () => {
-      // 浏览器会自动重连；这里只记录，不弹错
       console.warn("[useChat] events SSE disconnected, will retry");
     };
 
@@ -217,10 +226,9 @@ export function useChat() {
               case "warn":
                 setError(ev.content);
                 break;
-              case "intent" as any:
-                // 后端识别到"看简历/下载简历"意图，自动打开链接
-                  const intentEv = ev as any;
-		  if (intentEv.action === "download") {
+              case "intent" as any: {
+                const intentEv = ev as any;
+                if (intentEv.action === "download") {
                   const a = document.createElement("a");
                   a.href = intentEv.url;
                   a.download = "";
@@ -228,12 +236,12 @@ export function useChat() {
                   document.body.appendChild(a);
                   a.click();
                   document.body.removeChild(a);
-                }  else if (intentEv.action === "view") {
+                } else if (intentEv.action === "view") {
                   window.open(intentEv.url, "_blank", "noopener,noreferrer");
                 }
                 break;
+              }
               case "transfer" as any:
-                // AI 识别到转人工意图，已通知本人（但管理员还没真正接管）
                 setPendingTransfer(true);
                 setMessages((prev) => {
                   const last = prev[prev.length - 1];
@@ -244,6 +252,17 @@ export function useChat() {
                     return next;
                   }
                   return [...prev, { role: "assistant", content: tip }];
+                });
+                break;
+              case "done":
+                // 流结束：如果最后一条 AI 消息还是空的，删掉它
+                setMessages((prev) => {
+                  const next = [...prev];
+                  const last = next[next.length - 1];
+                  if (last && last.role === "assistant" && last.content.trim() === "") {
+                    next.pop();
+                  }
+                  return next;
                 });
                 break;
               case "error":
