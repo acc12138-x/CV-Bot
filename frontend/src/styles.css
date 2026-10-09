@@ -4977,3 +4977,20 @@ button { font-family: inherit; }
   .project-page { padding-left: 6vw !important; padding-right: 6vw !important; }
   .experience-page .experience-grid { padding-left: 28% !important; }
 }
+
+
+/* ============================================================
+   v39：经历页往右移
+   ============================================================ */
+
+.experience-page .experience-grid {
+  padding-left: 44% !important;       /* 从 32% 提到 44% */
+  padding-right: 4vw !important;
+}
+
+/* 大屏再收一点 */
+@media (min-width: 1400px) {
+  .experience-page .experience-grid {
+    padding-left: 42% !important;
+  }
+}
