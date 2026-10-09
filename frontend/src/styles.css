@@ -5145,3 +5145,54 @@ button { font-family: inherit; }
     font-size: 15px !important;
   }
 }
+
+
+/* ============================================================
+   v42：手机端会话列表/详情切换（强制生效）
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+  /* 布局：列表和详情叠在同一格 */
+  .sessions-section .sessions-layout {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto !important;
+    height: calc(100vh - 160px) !important;
+    min-height: 500px !important;
+  }
+
+  .sessions-section .sessions-list,
+  .sessions-section .sessions-detail {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  /* 列表状态：只显示列表，占满高度 */
+  .sessions-section.mobile-list .sessions-list {
+    display: flex !important;
+    flex-direction: column !important;
+    max-height: none !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+  }
+  .sessions-section.mobile-list .sessions-detail {
+    display: none !important;
+  }
+
+  /* 详情状态：只显示详情，占满高度 */
+  .sessions-section.mobile-detail .sessions-list {
+    display: none !important;
+  }
+  .sessions-section.mobile-detail .sessions-detail {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  /* 返回按钮 */
+  .sessions-section .back-btn {
+    display: flex !important;
+  }
+}

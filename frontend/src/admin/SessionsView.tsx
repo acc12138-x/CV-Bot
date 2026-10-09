@@ -92,7 +92,7 @@ export function SessionsView({ initialSessionId }: { initialSessionId?: string }
 
   const handleSelect = (id: string) => {
     setSelectedId(id);
-    if (isMobile()) setMobileView("detail");
+    setMobileView("detail");
   };
 
   const handleBack = () => {
