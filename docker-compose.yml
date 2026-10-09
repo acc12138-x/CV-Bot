@@ -5,11 +5,12 @@ services:
     restart: unless-stopped
     env_file:
       - ./backend/.env
-    # ⚠️ 必须带 127.0.0.1，否则会绑 0.0.0.0 直接暴露公网
     ports:
       - "127.0.0.1:18002:8000"
     volumes:
       - ./backend/data:/app/data
+      - ./backend/static:/app/static
+      - ./backend/facts:/app/facts
     mem_limit: 350m
     memswap_limit: 500m
     logging:
@@ -17,12 +18,3 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-
-  # 一次性构建前端产物，不常驻
-  frontend-build:
-    build: ./frontend
-    container_name: cv-bot-frontend-build
-    profiles: ["build"]
-    volumes:
-      - ./frontend/dist:/dist
-    command: ["sh", "-c", "cp -r /dist/. /out/ && echo 'frontend built'"]
