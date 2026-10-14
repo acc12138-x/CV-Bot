@@ -19,7 +19,6 @@ export function ResumePage() {
       .catch(() => { if (alive) setResume(null); })
       .finally(() => { if (alive) setLoaded(true); });
 
-    // 检查后端是否上传了原文件
     fetch("/api/site/resume", { method: "HEAD" })
       .then((r) => { if (alive) setHasFile(r.ok); })
       .catch(() => { if (alive) setHasFile(false); });
@@ -38,7 +37,9 @@ export function ResumePage() {
   }
 
   const extraLinks = Array.isArray(footer?.extraLinks) ? footer.extraLinks : [];
+  const html = resume.htmlContent || "";
 
+  // 用 iframe 隔离渲染，避免 A4 样式污染全站
   return (
     <div className="resume-page">
       <header className="resume-nav">
@@ -52,10 +53,12 @@ export function ResumePage() {
         </div>
       </header>
 
-      <main className="resume-content">
-        <div
-          className="resume-html"
-          dangerouslySetInnerHTML={{ __html: resume.htmlContent || "" }}
+      <main className="resume-content-full">
+        <iframe
+          className="resume-iframe"
+          srcDoc={html}
+          sandbox="allow-same-origin"
+          title="在线简历"
         />
       </main>
 
