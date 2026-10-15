@@ -28,108 +28,60 @@
 
 ```mermaid
 flowchart TB
-    V([👤 访客]):::visitor
-    N[宿主 nginx<br/>唯一公网入口<br/>443]:::nginx
-    S[静态资源<br/>frontend/dist]:::static
-    B[CV-Bot 后端<br/>FastAPI :18002<br/>127.0.0.1]:::backend
-    D[DeepSeek API<br/>SSE 流式]:::llm
-    DB[(SQLite<br/>WAL 模式)]:::db
-    F[飞书 Webhook<br/>转人工通知]:::feishu
-    A([🎛 管理员]):::admin
+    V[访客]
+    N[nginx :443]
+    S[静态资源 dist]
+    B[CV-Bot 后端 :18002]
+    D[DeepSeek API]
+    DB[(SQLite WAL)]
+    F[飞书 Webhook]
+    A[管理员]
 
-    V -->|HTTPS| N
-    N -->|/ 静态| S
-    N -->|/api/  /static/| B
-    B -->|调 LLM| D
-    B -->|读写| DB
-    B -->|通知| F
-    F -.->|消息推送| A
-    A -->|/admin| N
-
-    classDef visitor fill:#e0e7ff,stroke:#4f46e5,stroke-width:2px,color:#1e1b4b
-    classDef nginx fill:#fef3c7,stroke:#f59e0b,stroke-width:2px,color:#78350f
-    classDef static fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155
-    classDef backend fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
-    classDef llm fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#831843
-    classDef db fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
-    classDef feishu fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,color:#581c87
-    classDef admin fill:#fed7aa,stroke:#ea580c,stroke-width:2px,color:#7c2d12
+    V --> N
+    N --> S
+    N --> B
+    B --> D
+    B --> DB
+    B --> F
+    F -.-> A
+    A --> N
 ```
-
 ### 请求链路（转人工场景）
 
 ```mermaid
 sequenceDiagram
-    autonumber
-    participant V as 👤 访客
+    participant V as 访客
     participant N as nginx
     participant F as FastAPI
-    participant R as 限流器
-    participant DB as SQLite
     participant D as DeepSeek
-    participant FS as 飞书
 
     V->>N: POST /api/chat
-    N->>F: 转发（proxy_buffering off）
-    F->>R: 检查每 IP / 每会话
-    R-->>F: 通过
-    F->>DB: 读历史（最近 12 条）
-    F->>D: 调 LLM（含事实库 system prompt）
-    loop 流式 token
-        D-->>F: SSE chunk
-        F-->>V: SSE 推送（即时显示）
+    N->>F: 转发
+    F->>D: 调 LLM
+    loop 流式
+        D-->>F: chunk
+        F-->>V: SSE 推送
     end
-    F->>F: 验证器（ID / URL / 数字）
-    alt 验证通过
-        F->>DB: 落库
-        F-->>V: done
-    else 验证失败
-        F->>D: 重写一次
-        F->>F: 再验证
-        alt 仍失败
-            F-->>V: 降级为固定话术
-        end
-    end
-    opt 检测到 [[TRANSFER]] 标记
-        F->>FS: 加急卡片 + 跳转链接
-        FS-->>V: 显示"已通知本人"
-    end
+    F->>F: 验证器
+    F-->>V: done
 ```
-
 ### 前端页面结构
 
 ```mermaid
 flowchart LR
-    Root["/"]:::page
-    Resume["/resume"]:::page
-    Admin["/admin"]:::page
+    R[首页]
+    A[admin]
+    Re[resume]
 
-    Root --> H["Hero 页"]:::block
-    Root --> P1["项目 1"]:::block
-    Root --> P2["项目 2"]:::block
-    Root --> P3["项目 3"]:::block
-    Root --> E["我的经历"]:::block
-    Root -.->|聊天按钮| C["💬 聊天面板<br/>水波纹展开"]:::chat
+    R --> H1[Hero]
+    R --> P[项目页]
+    R --> E[经历]
 
-    Admin --> T1["首页 Hero"]:::tab
-    Admin --> T2["项目页面"]:::tab
-    Admin --> T3["我的经历"]:::tab
-    Admin --> T4["在线简历"]:::tab
-    Admin --> T5["个人信息"]:::tab
-    Admin --> T6["技术栈"]:::tab
-    Admin --> T7["简历文件"]:::tab
-    Admin --> T8["页脚 / 备案"]:::tab
-    Admin --> T9["飞书设置"]:::tab
-    Admin --> T10["事实库"]:::tab
-    Admin --> T11["会话记录"]:::tab
-    Admin --> T12["安全设置"]:::tab
-
-    classDef page fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
-    classDef block fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155
-    classDef chat fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#831843
-    classDef tab fill:#dcfce7,stroke:#16a34a,stroke-width:1px,color:#14532d
+    A --> T1[Hero 配置]
+    A --> T2[项目配置]
+    A --> T3[会话记录]
+    A --> T4[事实库]
 ```
-
 ---
 
 ## 🚀 快速开始
